@@ -11,9 +11,9 @@ usage() {
    "
 }
 
-# ---------------------- check prameters --------------------------------
+# ---------------------- check parameters --------------------------------
 # check parameters 
-if [ $# -gt 0 || ! -n "$1"]; then
+if [[ -z "$1" ]]; then
     usage
     exit 1
 fi

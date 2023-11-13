@@ -20,7 +20,7 @@ rename_files() {
     postfix="$2"
 
     if [ ! -d "$directory" ]; then
-        echo "Das Verzeichnis $directory existiert nicht."
+        echo "The directory $directory does not exist."
         exit 1
     fi
     for file in "$directory"/*; do
@@ -40,7 +40,7 @@ rename_files() {
             fi
 
             mv "$file" "$directory/$new_filename"
-            echo "Unbenannt: $filename -> $new_filename"
+            echo "Renamed: $filename -> $new_filename"
         fi
     done
 }

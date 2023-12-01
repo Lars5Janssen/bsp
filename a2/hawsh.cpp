@@ -8,22 +8,21 @@
 #define Author "Larissa, Lars, Elias"
 #define VERSION "1.0"
 
+#define BUFSIZE 256
+
 void runCommand(char command[255]);
+
+char *getCurrDir(char[]);
 
 int main ()
 {
     bool exit = false;
-
-    printf("Aktuelles Verzeichnis: \n");
-    int result = system("ls");
-    if (result != 0) {
-        printf("Couldn't open the directory\n");
-    }
+    char Buffer[BUFSIZE];
 
     while (!exit) {
         // Wait for user input
         char command[255];
-        printf("> ");
+        printf("%s > ", getCurrDir(Buffer));
         scanf("%s", command);
 
         if (strcmp(command, "quit") == 0) {
@@ -54,4 +53,17 @@ void runCommand(char command[255]) {
     if (result != 0) {
         printf("Couldn't find command: %s\n", command);
     }
+}
+
+char *getCurrDir(char Buffer[BUFSIZE]) {
+    char* result;
+
+    result = getcwd(Buffer, BUFSIZE);
+
+    if( result == nullptr ){
+        printf("getcwd failed!\n");
+        exit(1);
+    }
+
+    return Buffer;
 }

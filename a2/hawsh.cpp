@@ -38,14 +38,16 @@ int main ()
             int status = 0;
             int PID = fork();
 
-            if (command[strlen(command) -1] == '&') {
+            bool childProcess = command[strlen(command) -1] == '&';
+
+            if (childProcess) {
                 command[strlen(command) - 1] = '\0';
             }
 
             if (PID == 0) {
                 runCommand(command);
             }
-            if (command[strlen(command) -1] != '&') {
+            if (!childProcess) {
                 waitpid(PID, &status, 0);
             }
 
@@ -67,8 +69,6 @@ void runCommand(char command[BUFSIZE]) {
     char* result = new char[len1 + len2 + 1];
     strcpy(result, commandStart);
     strcat(result, command);
-
-    printf("\n%s\n", result);
 
     execl(result, "hawsh-child", (char *)NULL);
     // If fail

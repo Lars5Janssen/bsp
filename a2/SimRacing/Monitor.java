@@ -9,19 +9,14 @@ public class Monitor {
     private Integer numberOfCars;
     public Monitor(Integer numberOfCars) {
         this.numberOfExpectedCars = numberOfCars;
-        this.numberOfCars = 0;
         times = new HashMap<>();
     }
 
     public void enterTimeOfCar(Integer carNumber, Long time) {
         times.put(carNumber, time);
-        numberOfCars++;
-        if (numberOfCars.equals(numberOfExpectedCars)) {
-            printResults();
-        }
     }
 
-    private void printResults() {
+    public void printResults() {
         System.out.println("*** Endstand ***");
         for (int i = 0; i < numberOfExpectedCars; i++) {
             int formatedCarNumber = i + 1;

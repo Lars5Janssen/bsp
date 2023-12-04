@@ -1,16 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/types.h>
-#include <dirent.h>
 #include <cstring>
 #include <unistd.h>
+#include <sys/wait.h>
+#include <string>
 
 #define Author "Larissa, Lars, Elias"
 #define VERSION "1.0"
 
 #define BUFSIZE 256
 
-void runCommand(char command[255]);
+void runCommand(char command[BUFSIZE]);
 
 char *getCurrDir(char[]);
 
@@ -35,12 +35,22 @@ int main ()
                    "version\n"
                    "help\n");
         } else {
+            int status = 0;
+            int PID = fork();
+
             if (command[strlen(command) -1] == '&') {
-                if (fork() == 0) {
-                    runCommand(command);
-                }
-            } else {
+                command[strlen(command) - 1] = '\0';
+            }
+
+            if (PID == 0) {
                 runCommand(command);
+            }
+            if (command[strlen(command) -1] != '&') {
+                waitpid(PID, &status, 0);
+            }
+
+            if (status != 0) {
+                printf("Befehl %s nicht gefunden", command);
             }
         }
     }
@@ -48,11 +58,21 @@ int main ()
     return 0;
 }
 
-void runCommand(char command[255]) {
-    int result = system(command);
-    if (result != 0) {
-        printf("Couldn't find command: %s\n", command);
-    }
+void runCommand(char command[BUFSIZE]) {
+    char commandStart[] = "/bin/";
+
+    size_t len1 = strlen(commandStart);
+    size_t len2 = strlen(command);
+
+    char* result = new char[len1 + len2 + 1];
+    strcpy(result, commandStart);
+    strcat(result, command);
+
+    printf("\n%s\n", result);
+
+    execl(result, "hawsh-child", (char *)NULL);
+    // If fail
+    perror("execl");
 }
 
 char *getCurrDir(char Buffer[BUFSIZE]) {

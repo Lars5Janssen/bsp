@@ -27,10 +27,19 @@ public class Table {
         }
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws InterruptedException {
 
         new Table();
-//        System.err.println("-------------------- THE END -------------------");
+
+        Thread.sleep(10000);
+        for (Agent agent: agentList) {
+            agent.interrupt();
+        }
+        for (Smoker smoker: smokerList) {
+            smoker.interrupt();
+        }
+
+        System.err.println("-------------------- THE END -------------------");
     }
 
     public synchronized void addIngredients(ArrayList<String> newIngredients) throws InterruptedException {
@@ -38,14 +47,14 @@ public class Table {
             this.wait();
         }
 
-        System.out.printf("\tAvailable Ingredients (before adding new ones): %s, Size: %d\n", this.ingredients, this.ingredients.size());
+        System.out.printf("\n\tAgent has put down %s\n", newIngredients);
 
         this.ingredients = newIngredients;
         this.notifyAll();
     }
 
     public synchronized boolean getIngredients(String ownIngredient) throws InterruptedException {
-        while (this.ingredients.size() != NEEDED_INGREDIENTS_NUMBER) {
+        while (this.ingredients.size() < NEEDED_INGREDIENTS_NUMBER) {
             this.wait();
         }
 
@@ -57,10 +66,12 @@ public class Table {
         return availableIngredients.containsAll(agentIngredients);
     }
 
-    public synchronized void finishedSmoking() {
+    public synchronized void clearItems() {
+        System.err.println("INGREDIENTS HAVE BEEN USED\n");
         this.ingredients.clear();
-        System.out.println("Ingredients have been used");
+    }
 
+    public synchronized void finishedSmoking() {
         this.notifyAll();
     }
 }

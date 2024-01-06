@@ -22,8 +22,10 @@ public class Agent extends Thread {
         while (!Thread.currentThread().isInterrupted()) {
             try {
                 this.giveThing(table, ingredientsNumber);
-            } catch (InterruptedException ignored) {}
-            System.out.printf("Agent %s has put down their ingredients\n", name.toUpperCase());
+                System.err.printf("AGENT %s HAS PUT DOWN THEIR INGREDIENTS\n", name.toUpperCase());
+            } catch (InterruptedException ignored) {
+                return;
+            }
         }
     }
 
@@ -33,7 +35,7 @@ public class Agent extends Thread {
         for (int i = 0; i < ingredientsNumber; i++) {
             int index = (int) (Math.random() * ingredientsCopy.size());
             ingredientsToGive.add(ingredientsCopy.get(index));
-            System.out.printf("Agent %s has put down %s\n", name.toUpperCase(), ingredientsCopy.get(index));
+            //System.err.printf("\tAgent %s has put down %s\n", name.toUpperCase(), ingredientsCopy.get(index));
             ingredientsCopy.remove(index);
         }
         table.addIngredients(ingredientsToGive);

@@ -27,14 +27,16 @@ public class Smoker extends Thread {
             try {
                 tryIngredients();
             } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+                return;
             }
         }
     }
 
     public void tryIngredients() throws InterruptedException {
-        System.out.printf("Smoker %s tried ingredients\n\n", name);
+        System.out.printf("\tSmoker %s tried ingredients\n\n", name);
         if (this.table.getIngredients(ownIngredient)) {
+            System.err.printf("\nSMOKER %s IS SMOKING.\n", name.toUpperCase());
+            table.clearItems();
             smoke();
             table.finishedSmoking();
         }
@@ -45,7 +47,7 @@ public class Smoker extends Thread {
         // Smoke for random time
         try {
             Thread.sleep((long) ((Math.random() * (100 - 1)) + 1000));
-            System.out.printf("Smoker %s has smoked after ", name.toUpperCase());
+            System.err.printf("\nSMOKER %s HAS FINISHED SMOKING.\n", name.toUpperCase());
         } catch (InterruptedException ignored) {}
     }
 }

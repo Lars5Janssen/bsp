@@ -1,10 +1,12 @@
+package Mensa;
+
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * Kasse.java: Bietet eine Zugangsmethode ("enter") an mit anschliessendem
+ * Mensa.Kasse.java: Bietet eine Zugangsmethode ("enter") an mit anschliessendem
  * Bezahlen. Exklusiver Zugang durch Mutex! Die Anzahl wartender Studenten kann
  * inkrementiert, dekrementiert und abgefragt werden. Fuer die Sortierung wird
- * das Comparable<Kasse>-Interface implementiert, dass die aktuelle
+ * das Comparable<Mensa.Kasse>-Interface implementiert, dass die aktuelle
  * Studi-Warteschlangenlaenge als Kriterium verwendet.
  */
 public class Kasse implements Comparable<Kasse> {
@@ -15,15 +17,15 @@ public class Kasse implements Comparable<Kasse> {
 		return kassenMutex;
 	}
 
-	private ReentrantLock kassenMutex = new ReentrantLock(true); // Faire Warteschlange vor dieser Kasse!
-	//private ReentrantLock StudentenQueueMutex = new ReentrantLock(true); // Faire Warteschlange vor dieser Kasse!
+	private ReentrantLock kassenMutex = new ReentrantLock(true); // Faire Warteschlange vor dieser Mensa.Kasse!
+	//private ReentrantLock StudentenQueueMutex = new ReentrantLock(true); // Faire Warteschlange vor dieser Mensa.Kasse!
 
 	public Kasse(int num) {
 		kassenNummer = num;
 	}
 
 	/*
-	 * Student ruft die Methode ENTER auf --> Mutex garantiert den exklusiven
+	 * Mensa.Student ruft die Methode ENTER auf --> Mutex garantiert den exklusiven
 	 * Zugriff und verwaltet die Warteschlange!
 	 */
 	public void enter() throws InterruptedException {
@@ -33,7 +35,7 @@ public class Kasse implements Comparable<Kasse> {
 			// Zahlvorgang abwarten
 			bezahlen();
 		} finally {
-			// Kasse verlassen
+			// Mensa.Kasse verlassen
 			kassenMutex.unlock();
 		}
 	}
@@ -72,7 +74,7 @@ public class Kasse implements Comparable<Kasse> {
 
 	public void dekrAnzahlStudenten() {
 		anzahlStudenten--;
-		System.out.printf("Kasse: %s Anazhl Studenten: %d\n",kassenNummer, anzahlStudenten);
+		System.out.printf("Mensa.Kasse: %s Anazhl Studenten: %d\n",kassenNummer, anzahlStudenten);
 	}
 	@Override
 	public int compareTo(Kasse kasse2) {

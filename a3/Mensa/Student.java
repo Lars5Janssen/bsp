@@ -1,8 +1,10 @@
+package Mensa;
+
 import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * Student.java: Waehlt die Kassen mit der kuerzesten Warteschlange und stellt
+ * Mensa.Student.java: Waehlt die Kassen mit der kuerzesten Warteschlange und stellt
  * sich dort an. Nach dem Bezahlen isst er fuer eine Zufallszeit und beginnt von
  * vorne.
  */
@@ -22,24 +24,24 @@ public class Student extends Thread {
 		try {
 			while (!isInterrupted()) {
 				/*
-				 * Waehle die Kasse mit der kuerzesten Warteschlange --> Sortiere absteigend
+				 * Waehle die Mensa.Kasse mit der kuerzesten Warteschlange --> Sortiere absteigend
 				 */
 				sortMutex.lock(); // Kritischer Abschnitt 1 start
 				Collections.sort(meineMensa.kassenliste);
 				besteKasse = meineMensa.kassenliste.getFirst();
-				System.out.printf("Beste Kasse: %s%n", besteKasse.getKassenName());
-				System.err.print(this.getName() + " waehlt Kasse " + besteKasse.getKassenName() + "\n");
+				System.out.printf("Beste Mensa.Kasse: %s%n", besteKasse.getKassenName());
+				System.err.print(this.getName() + " waehlt Mensa.Kasse " + besteKasse.getKassenName() + "\n");
 				meineMensa.showScore();
 
 				// Warteschlangenzaehler erhoehen
 				besteKasse.inkrAnzahlStudenten();
 				sortMutex.unlock(); // Kritischer Abschnitt 1 stop
 
-				// An Kasse anstellen
+				// An Mensa.Kasse anstellen
 				besteKasse.enter();
 
-				// Kasse verlassen --> Warteschlangenzaehler erniedrigen
-            System.err.println(this.getName() + " verlaesst Kasse " + besteKasse.getKassenName());
+				// Mensa.Kasse verlassen --> Warteschlangenzaehler erniedrigen
+            System.err.println(this.getName() + " verlaesst Mensa.Kasse " + besteKasse.getKassenName());
 				sortMutex.lock(); // Kritischer Abschnitt 2 start
 				besteKasse.dekrAnzahlStudenten();
 				sortMutex.unlock(); // Kritischer Abschnitt 2 stop
@@ -48,7 +50,7 @@ public class Student extends Thread {
 			}
 		} catch (InterruptedException e) {
 		}
-		System.err.println("Student " + this.getName() + " beendet seine Teilnahme");
+		System.err.println("Mensa.Student " + this.getName() + " beendet seine Teilnahme");
 	}
 
 	// Studenten benutzen diese Methode, um zu essen oder sich zu vergnuegen

@@ -1,8 +1,10 @@
+package Mensa;
+
 import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * Mensa.java: Erzeuge Kassen und fuege sie einer Kassenliste hinzu. Erzeuge
+ * Mensa.Mensa.java: Erzeuge Kassen und fuege sie einer Kassenliste hinzu. Erzeuge
  * Studenten-Threads und starte diese. Nach Ende der Laufzeit werden alle
  * Studententhreads unterbrochen.
  */
@@ -50,10 +52,10 @@ public class Mensa {
 	}
 
 	public void showScore() {
-		/* Anzeige der Anzahl an Studis pro Kasse in einer Zeile */
+		/* Anzeige der Anzahl an Studis pro Mensa.Kasse in einer Zeile */
 		System.err.print(" --- Kassenliste ");
 		for (int i = 0; i < ANZAHL_KASSEN; i++) {
-			System.err.print(String.format("  Kasse %s: %2d", kassenliste.get(i).getKassenName(),
+			System.err.print(String.format("  Mensa.Kasse %s: %2d", kassenliste.get(i).getKassenName(),
 					kassenliste.get(i).getAnzahlStudenten()));
 		}
 		System.err.println();

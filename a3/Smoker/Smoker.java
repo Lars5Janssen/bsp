@@ -33,10 +33,10 @@ public class Smoker extends Thread {
     }
 
     public void tryIngredients() throws InterruptedException {
-        System.out.printf("\nSmoker %s tries ingredients\n", name);
-        if (this.table.getIngredients(name, ownIngredient)) {
-            table.clearIngredients();
+        System.out.printf("Smoker %s tried ingredients\n\n", name);
+        if (this.table.getIngredients(ownIngredient)) {
             smoke();
+            table.finishedSmoking();
         }
         Thread.sleep(5);
     }
@@ -45,7 +45,7 @@ public class Smoker extends Thread {
         // Smoke for random time
         try {
             Thread.sleep((long) ((Math.random() * (100 - 1)) + 1000));
-            System.out.printf("Smoker %s has smoked\n", name.toUpperCase());
+            System.out.printf("Smoker %s has smoked after ", name.toUpperCase());
         } catch (InterruptedException ignored) {}
     }
 }

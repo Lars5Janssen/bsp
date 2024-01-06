@@ -10,7 +10,7 @@ public class Table {
 
     private static final int INGREDIENTS_NUMBER = 2;
     private static final int NEEDED_INGREDIENTS_NUMBER = 2;
-    private static final int SMOKER_NUMBER = 4;
+    private static final int SMOKER_NUMBER = 3;
     private static final int AGENT_NUMBER = 2;
     static final ArrayList<String> agentIngredients = new ArrayList<>(Arrays.asList("Tobacco", "Paper", "Match"));
     public List<String> ingredients = new ArrayList<>();
@@ -19,7 +19,7 @@ public class Table {
 
     public Table() {
         for (int i = 0; i < AGENT_NUMBER; i++) {
-            agentList.add(new Agent(this, String.valueOf(i), INGREDIENTS_NUMBER, agentIngredients));
+            agentList.add(new Agent(this, String.valueOf(i+1), INGREDIENTS_NUMBER, agentIngredients));
         }
 
         for (int i = 0; i < SMOKER_NUMBER; i++) {
@@ -38,12 +38,13 @@ public class Table {
             this.wait();
         }
 
-        System.out.printf("Available Ingredients (before adding new ones): %s, Size: %d\n", this.ingredients, this.ingredients.size());
+        System.out.printf("\tAvailable Ingredients (before adding new ones): %s, Size: %d\n", this.ingredients, this.ingredients.size());
 
         this.ingredients = newIngredients;
+        this.notifyAll();
     }
 
-    public synchronized boolean getIngredients(String name, String ownIngredient) throws InterruptedException {
+    public synchronized boolean getIngredients(String ownIngredient) throws InterruptedException {
         while (this.ingredients.size() != NEEDED_INGREDIENTS_NUMBER) {
             this.wait();
         }
@@ -51,13 +52,15 @@ public class Table {
         ArrayList<String> availableIngredients = new ArrayList<>(ingredients);
 
         availableIngredients.add(ownIngredient);
-        System.out.printf("Available Ingredients: %s\n", availableIngredients);
+        System.out.printf("\tAvailable Ingredients: %s\n", availableIngredients);
 
         return availableIngredients.containsAll(agentIngredients);
     }
 
-    public synchronized void clearIngredients() {
-        System.out.println("Ingredients have been cleared");
+    public synchronized void finishedSmoking() {
         this.ingredients.clear();
+        System.out.println("Ingredients have been used");
+
+        this.notifyAll();
     }
 }

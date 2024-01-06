@@ -10,9 +10,11 @@ public class Mensa {
 	private static final int ANZAHL_STUDENTEN = 100;
 	private static final int ANZAHL_KASSEN = 3;
 
+	ReentrantLock sortMutex = new ReentrantLock(true);
 	public LinkedList<Kasse> kassenliste;
 
 	private LinkedList<Student> studentenListe;
+
 
 	public void starteSimulation() {
 		Kasse aktKasse;
@@ -29,7 +31,7 @@ public class Mensa {
 		}
 		/* Studenten erzeugen */
 		for (i = 0; i < ANZAHL_STUDENTEN; i++) {
-			aktStudent = new Student(String.format("Studi-%2d", i), this);
+			aktStudent = new Student(String.format("Studi-%2d", i), this, sortMutex);
 			studentenListe.add(aktStudent);
 			aktStudent.start();
 		}

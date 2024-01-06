@@ -11,7 +11,12 @@ public class Kasse implements Comparable<Kasse> {
 	private int kassenNummer;
 	private int anzahlStudenten;
 
+	public ReentrantLock getKassenMutex() {
+		return kassenMutex;
+	}
+
 	private ReentrantLock kassenMutex = new ReentrantLock(true); // Faire Warteschlange vor dieser Kasse!
+	//private ReentrantLock StudentenQueueMutex = new ReentrantLock(true); // Faire Warteschlange vor dieser Kasse!
 
 	public Kasse(int num) {
 		kassenNummer = num;
@@ -24,6 +29,7 @@ public class Kasse implements Comparable<Kasse> {
 	public void enter() throws InterruptedException {
 		try {
 			kassenMutex.lock();
+			System.out.printf("Int: %d | Mutex: %d\n", anzahlStudenten, kassenMutex.getQueueLength());
 			// Zahlvorgang abwarten
 			bezahlen();
 		} finally {
@@ -61,12 +67,13 @@ public class Kasse implements Comparable<Kasse> {
 
 	public void inkrAnzahlStudenten() {
 		anzahlStudenten++;
+		System.out.printf("Anazhl Studenten: %d\n", anzahlStudenten);
 	}
 
 	public void dekrAnzahlStudenten() {
 		anzahlStudenten--;
+		System.out.printf("Kasse: %s Anazhl Studenten: %d\n",kassenNummer, anzahlStudenten);
 	}
-
 	@Override
 	public int compareTo(Kasse kasse2) {
 		/* Sortiere Kassen nach Warteschlangenlaenge aufsteigend */

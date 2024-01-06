@@ -38,6 +38,7 @@ public class Smoker extends Thread {
             System.err.printf("\nSMOKER %s IS SMOKING.\n", name.toUpperCase());
             table.clearItems();
             smoke();
+            System.err.printf("\nSMOKER %s HAS FINISHED SMOKING.\n", name.toUpperCase());
             table.finishedSmoking();
         }
         Thread.sleep(5);
@@ -47,7 +48,6 @@ public class Smoker extends Thread {
         // Smoke for random time
         try {
             Thread.sleep((long) ((Math.random() * (100 - 1)) + 1000));
-            System.err.printf("\nSMOKER %s HAS FINISHED SMOKING.\n", name.toUpperCase());
         } catch (InterruptedException ignored) {}
     }
 }

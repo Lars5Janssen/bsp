@@ -23,7 +23,7 @@ public class SimulationEnv {
 
 	/**
 	 * Main-Methode zum Start der Simulation
-	 * 
+	 *
 	 * @param args
 	 */
 	public static void main(String[] args) {
@@ -39,16 +39,18 @@ public class SimulationEnv {
 		// ------------------------- Parameter setzen
 		// ------------------------------------------
 		// Dauer der Simulation in ms
-		simulationTime = 2000;
-		
+		simulationTime = 800;
+
 		// max. Anzahl Seiten pro Prozess im Hauptspeicher (sonst Verdrängung eigener Seiten)
-		os.setMAX_RAM_PAGES_PER_PROCESS(10);
-		
+		os.setMAX_RAM_PAGES_PER_PROCESS(Integer.parseInt(args[0]));
+
 		// CLOCK oder FIFO oder RANDOM
-		os.setREPLACEMENT_ALGORITHM(OperatingSystem.ImplementedReplacementAlgorithms.CLOCK);
-		
+		os.setREPLACEMENT_ALGORITHM(OperatingSystem.ImplementedReplacementAlgorithms.FIFO);
+
 		// Anzahl Operationen innerhalb eines lokalen Adressbereichs
-		os.setDEFAULT_LOCALITY_FACTOR(1);
+		os.setDEFAULT_LOCALITY_FACTOR(Integer.parseInt(args[1]));
+		System.out.println(Integer.parseInt(args[0]));
+		System.out.println(Integer.parseInt(args[1]));
 
 		// Testausgaben erwünscht? Wenn true, dann simulationTime auf max. 200 ms setzen!
 		os.setTestMode(false);

@@ -163,8 +163,8 @@ public class OperatingSystem {
 	/**
 	 * Prozess-Objekt (Thread) erzeugen und in Prozessliste eintragen
 	 * 
-	 * @param die
-	 *            Größe des Prozess-Hauptspeicherbedarfs in Byte
+	 * @param processSize
+	 *            die Größe des Prozess-Hauptspeicherbedarfs in Byte
 	 * 
 	 * @return die neue Prozess-ID oder -1, wenn Erzeugung nicht möglich
 	 *         (Speichermangel)
@@ -374,7 +374,7 @@ public class OperatingSystem {
 	 * @return Die entsprechende virtuelle Seitennummer
 	 */
 	private int getVirtualPageNum(int virtAdr) {
-		// ToDo
+		return (int) Math.floor(virtAdr / (double) PAGE_SIZE);
 	}
 
 	/**
@@ -383,7 +383,7 @@ public class OperatingSystem {
 	 * @return Den entsprechenden Offset zur Berechnung der realen Adresse
 	 */
 	private int getOffset(int virtAdr) {
-		// ToDo
+		return virtAdr % PAGE_SIZE;
 	}
 
 	/**

@@ -154,10 +154,28 @@ public class PageTable {
 	 * RANDOM-Algorithmus: Zufällige Auswahl
 	 */
 	private PageTableEntry randomAlgorithm(PageTableEntry newPte) {
-   // ToDo
+		Random rand = new Random();
+		int i = rand.nextInt(0, pteRAMlist.size());
+		PageTableEntry pageToReplace = pteRAMlist.get(i);
+
+		// Suche den nächsten Eintrag mit referenced == false (R-Bit = 0)
+		while (pageToReplace.referenced) {
+			// Seite wurde referenziert, also nicht auswählen, sondern R-Bit zurücksetzen
+			os.testOut("Prozess " + pid + ": RANDOM-Algorithmus! --- pte.vpn: "
+					+ pageToReplace.virtPageNum + " ref: " + pageToReplace.referenced);
+			pageToReplace.referenced = false;
+			i = rand.nextInt(0, pteRAMlist.size());
+			pageToReplace = pteRAMlist.get(i);
+		}
+
+		pteRAMlist.remove(pageToReplace);
+		pteRAMlist.add(i, newPte);
+
+		return pageToReplace;
 	}
 
 	// ----------------------- Hilfsmethode --------------------------------
+
 	/**
 	 * ramPteIndex zirkular hochzählen zwischen 0 .. Listengröße-1
 	 */

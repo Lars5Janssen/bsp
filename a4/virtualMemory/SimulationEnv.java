@@ -53,7 +53,7 @@ public class SimulationEnv {
 		System.out.println(Integer.parseInt(args[1]));
 
 		// Testausgaben erwünscht? Wenn true, dann simulationTime auf max. 200 ms setzen!
-		os.setTestMode(false);
+		os.setTestMode(true);
 
 		// ------------------------- Parameter setzen Ende
 		// -----------------------------------------------
